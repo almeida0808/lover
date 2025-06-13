@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosso Amor ♥</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('/static/background.avif') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      padding: 40px 15px;
+      background-color: rgba(0, 0, 0, 0.5);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 7vw;
+      margin-bottom: 10px;
+    }
+
+    .contador {
+      font-size: 5vw;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .carousel {
+      width: 80vw;
+      max-width: 300px;
+      height: 80vw;
+      max-height: 300px;
+      margin: 0 auto 25px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+      background-color: #fff;
+      position: relative;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .carousel img.active {
+      display: block;
+    }
+
+    .mensagem {
+      font-size: 4.5vw;
+      max-width: 90%;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    @media (min-width: 600px) {
+      h1 {
+        font-size: 36px;
+      }
+      .contador {
+        font-size: 24px;
+      }
+      .mensagem {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Estamos juntos há:</h1>
+    <div class="contador" id="contador">Carregando...</div>
+
+    <div class="carousel">
+      <img src="/static/foto18.png" class="active">
+      <img src="/static/foto17.png">
+      <img src="/static/foto16.png">
+      <img src="/static/foto15.jpg">
+      <img src="/static/foto14.png">
+      <img src="/static/foto13.jpg">
+      <img src="/static/foto12.jpg">
+      <img src="/static/foto11.webp">
+      <img src="/static/foto10.webp">
+      <img src="/static/foto9.webp">
+      <img src="/static/foto8.webp">
+      <img src="/static/foto7.jpg">
+      <img src="/static/foto6.webp">
+      <img src="/static/foto5.webp">
+      <img src="/static/foto4.webp">
+      <img src="/static/foto3.webp">
+      <img src="/static/foto2.jpg">
+      <img src="/static/foto1.jpg">
+
+
+
+    </div>
+
+    <div class="mensagem">muita coisa já se passou e meu amor<br>por você só aumentou ♥</div>
+  </div>
+
+  <script>
+    const startDate = new Date("{{ start_date }}");
+
+    function calcularTempo() {
+      const now = new Date();
+      let anos = now.getFullYear() - startDate.getFullYear();
+      let meses = now.getMonth() - startDate.getMonth();
+      let dias = now.getDate() - startDate.getDate();
+
+      if (dias < 0) {
+        meses--;
+        const ultimoMes = new Date(now.getFullYear(), now.getMonth(), 0);
+        dias += ultimoMes.getDate();
+      }
+
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+
+      const diffMs = now - startDate;
+      const totalDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const diffSegundos = Math.floor(diffMs / 1000);
+      const horas = Math.floor((diffSegundos % 86400) / 3600);
+      const minutos = Math.floor((diffSegundos % 3600) / 60);
+      const segundos = diffSegundos % 60;
+
+      document.getElementById("contador").textContent =
+        `${anos} anos, ${meses} meses, ${dias} dias, ` +
+        `${String(horas).padStart(2, '0')}h ${String(minutos).padStart(2, '0')}m ${String(segundos).padStart(2, '0')}s`;
+    }
+
+    setInterval(calcularTempo, 1000);
+    calcularTempo();
+
+    // Carrossel simples de imagens
+    const imagens = document.querySelectorAll(".carousel img");
+    let indiceAtual = 0;
+    setInterval(() => {
+      imagens[indiceAtual].classList.remove("active");
+      indiceAtual = (indiceAtual + 1) % imagens.length;
+      imagens[indiceAtual].classList.add("active");
+    }, 3000);
+  </script>
+</body>
+</html>
