@@ -67,6 +67,111 @@
       line-height: 1.4;
     }
 
+    audio {
+      margin: 20px 0;
+      width: 90%;
+      max-width: 300px;
+    }
+
+    .carta-btn {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .carta-texto {
+      display: none;
+      margin-top: 15px;
+      font-size: 18px;
+      max-width: 90%;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .heart-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      border-radius: 50%;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      opacity: 0.05;
+      transition: opacity 0.3s;
+    }
+
+    .heart-btn:hover {
+      opacity: 0.5;
+    }
+
+    .nao-clique-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 12px;
+      padding: 6px 12px;
+      background-color: black;
+      color: white;
+      border: 1px solid white;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+      color: white;
+    }
+
+    .popup video {
+      width: 90%;
+      max-width: 300px;
+      border-radius: 12px;
+    }
+
+    .popup p {
+      margin-top: 15px;
+      font-size: 18px;
+      max-width: 90%;
+    }
+
+    .popup-close {
+      margin-top: 20px;
+      background-color: #ff69b4;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .creditos {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
     @media (min-width: 600px) {
       h1 {
         font-size: 36px;
@@ -104,12 +209,39 @@
       <img src="/static/foto3.webp">
       <img src="/static/foto2.jpg">
       <img src="/static/foto1.jpg">
-
-
-
     </div>
 
+    <audio id="musica" controls>
+      <source src="/static/musica.mp3" type="audio/mpeg">
+      Seu navegador não suporta o elemento de áudio.
+    </audio>
+
     <div class="mensagem">muita coisa já se passou e meu amor<br>por você só aumentou ♥</div>
+
+    <button class="carta-btn" onclick="mostrarCarta()">💌 Clique para ler uma carta</button>
+    <p class="carta-texto" id="carta"></p>
+
+    <div class="creditos">Feito com muito amor por <strong>seu amorzinho</strong> 💖</div>
+  </div>
+
+  <button class="heart-btn" onclick="abrirPopup('popup')">❤</button>
+  <button class="nao-clique-btn" onclick="abrirPopup('popup2')">Não Clique</button>
+
+  <div class="popup" id="popup">
+    <video controls>
+      <source src="/static/surpresa.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo.
+    </video>
+    <p>Surpresa! Espero que esse momento especial faça você sorrir ainda mais. Eu te amo! 💖</p>
+    <button class="popup-close" onclick="fecharPopup('popup')">Fechar</button>
+  </div>
+
+  <div class="popup" id="popup2">
+    <video controls>
+      <source src="/static/johnDeer.mp4" type="video/mp4">
+    </video>
+    <p>Falei que não precisava clicar é só um Jonh Deer</p>
+    <button class="popup-close" onclick="fecharPopup('popup2')">Fechar</button>
   </div>
 
   <script>
@@ -133,7 +265,6 @@
       }
 
       const diffMs = now - startDate;
-      const totalDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
       const diffSegundos = Math.floor(diffMs / 1000);
       const horas = Math.floor((diffSegundos % 86400) / 3600);
       const minutos = Math.floor((diffSegundos % 3600) / 60);
@@ -147,7 +278,6 @@
     setInterval(calcularTempo, 1000);
     calcularTempo();
 
-    // Carrossel simples de imagens
     const imagens = document.querySelectorAll(".carousel img");
     let indiceAtual = 0;
     setInterval(() => {
@@ -155,6 +285,32 @@
       indiceAtual = (indiceAtual + 1) % imagens.length;
       imagens[indiceAtual].classList.add("active");
     }, 3000);
+
+    function mostrarCarta() {
+      const carta = document.getElementById("carta");
+      const mensagens = [
+        "Desde que você entrou na minha vida,as coisas começaram a ter sentido. Obrigado por ser meu amor, minha paz. ♥",
+        "Cada momento ao seu lado é um presente. Te amo mais do que palavras podem expressar.",
+        "Nosso amor é a minha força diária. Você é o motivo de tudo.",
+        "Quando você apareceu, aprendi o verdadeiro significado de amar"
+      ];
+      const index = Math.floor(Math.random() * mensagens.length);
+      carta.textContent = mensagens[index];
+      carta.style.display = "block";
+    }
+
+    function abrirPopup(id) {
+      const audio = document.getElementById("musica");
+      if (!audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function fecharPopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
   </script>
 </body>
 </html>
